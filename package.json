@@ -1,0 +1,11 @@
+{
+	"name": "les-poutineur-revival",
+	"private": true,
+	"scripts": {
+		"start": "wp-env start && bash bin/local-setup.sh",
+		"stop": "wp-env stop",
+		"reset": "wp-env clean all && bash bin/local-setup.sh",
+		"zips": "bash bin/build-zips.sh"
+	},
+	"devDependencies": { "@wordpress/env": "^10.0.0" }
+}
