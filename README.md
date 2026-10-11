@@ -11,6 +11,15 @@ Tout est dans le plugin `wp-content/plugins/poutine-builder`.
 3. **Retrait** : au checkout, le client choisit la boutique puis un créneau (horaires, jours fermés, préparation minimum, capacité par créneau configurables).
 4. **Caisse** : quand la commande passe en « En cours » (payée, ou paiement au retrait), un envoi asynchrone (Action Scheduler) part vers la caisse de la boutique choisie, avec 5 essais (1 min, 5 min, 15 min, 1 h). Le statut est visible dans les notes de commande, et l'action « Renvoyer la commande à la caisse » existe sur chaque commande.
 
+## Suivi des commandes (personnel)
+
+Créer une page avec `[poutine_staff]` (idéalement sur une tablette en boutique). Accès réservé aux comptes du rôle **Équipe boutique** (créé automatiquement), aux gérants et aux admins ; la page n'est pas indexée.
+
+- 3 colonnes : Nouvelles → En préparation → Prêtes, puis « Retirée » (la commande WooCommerce passe en *Terminée*).
+- Rafraîchissement toutes les 15 s, bip + titre clignotant sur nouvelle commande (bouton « Son activé » à toucher une fois par session : exigence des navigateurs).
+- Heure de retrait, compte à rebours, retard en rouge, téléphone cliquable, note client, « À encaisser » si paiement au retrait, alerte si l'envoi caisse a échoué.
+- Choix de la boutique mémorisé sur l'appareil.
+
 ## Démarrage
 
 ```bash

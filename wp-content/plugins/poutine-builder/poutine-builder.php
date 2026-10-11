@@ -23,6 +23,7 @@ foreach ( array(
 	'class-pb-pickup.php',
 	'class-pb-frontend.php',
 	'class-pb-settings.php',
+	'class-pb-staff.php',
 	'pos/interface-pb-pos-adapter.php',
 	'pos/class-pb-pos-webhook.php',
 	'pos/class-pb-pos-dispatcher.php',
@@ -59,6 +60,7 @@ add_action(
 		PB_Pickup::init();
 		PB_Frontend::init();
 		PB_Settings::init();
+		PB_Staff::init();
 		PB_POS_Dispatcher::init();
 	}
 );
