@@ -58,7 +58,7 @@ class PB_Catalog {
 	/**
 	 * Ingrédients disponibles, indexés par ID.
 	 *
-	 * @return array<int,array{id:int,step:string,name:string,price:float,desc:string,image:string,emoji:string,badge:string,contents:string}>
+	 * @return array<int,array{id:int,step:string,name:string,price:float,desc:string,image:string,badge:string,contents:string}>
 	 */
 	public static function ingredients(): array {
 		if ( null !== self::$cache ) {
@@ -83,8 +83,7 @@ class PB_Catalog {
 				'name'  => $p->post_title,
 				'price' => (float) get_post_meta( $p->ID, '_pb_price', true ),
 				'desc'  => wp_strip_all_tags( $p->post_excerpt ),
-				'image' => (string) get_the_post_thumbnail_url( $p->ID, 'medium' ),
-				'emoji'    => (string) get_post_meta( $p->ID, '_pb_emoji', true ),
+				'image'    => (string) ( get_the_post_thumbnail_url( $p->ID, 'medium_large' ) ?: PB_URL . 'assets/placeholder.svg' ),
 				'badge'    => (string) get_post_meta( $p->ID, '_pb_badge', true ),
 				'contents' => (string) get_post_meta( $p->ID, '_pb_contents', true ),
 			);
@@ -165,7 +164,6 @@ class PB_Catalog {
 		wp_nonce_field( 'pb_ingredient_save', 'pb_ingredient_nonce' );
 		$step  = get_post_meta( $post->ID, '_pb_step', true );
 		$price = get_post_meta( $post->ID, '_pb_price', true );
-		$emoji = get_post_meta( $post->ID, '_pb_emoji', true );
 		$badge = get_post_meta( $post->ID, '_pb_badge', true );
 		$cont  = get_post_meta( $post->ID, '_pb_contents', true );
 		$avail = get_post_meta( $post->ID, '_pb_available', true ) ?: 'yes';
@@ -189,10 +187,6 @@ class PB_Catalog {
 			<tr><th><label for="pb_badge">Badge</label></th><td>
 				<input type="text" name="pb_badge" id="pb_badge" value="<?php echo esc_attr( $badge ); ?>" placeholder="Topping du mois, Vegan, Nouveau…">
 			</td></tr>
-			<tr><th><label for="pb_emoji">Emoji</label></th><td>
-				<input type="text" name="pb_emoji" id="pb_emoji" value="<?php echo esc_attr( $emoji ); ?>" size="4">
-				<p class="description">Affiché si aucune image mise en avant.</p>
-			</td></tr>
 			<tr><th>Disponibilité</th><td>
 				<label><input type="radio" name="pb_available" value="yes" <?php checked( $avail, 'yes' ); ?>> Disponible</label>
 				<label><input type="radio" name="pb_available" value="no" <?php checked( $avail, 'no' ); ?>> Rupture</label>
@@ -214,7 +208,6 @@ class PB_Catalog {
 		update_post_meta( $post_id, '_pb_price', max( 0, (float) wp_unslash( $_POST['pb_price'] ?? 0 ) ) );
 		update_post_meta( $post_id, '_pb_contents', sanitize_textarea_field( wp_unslash( $_POST['pb_contents'] ?? '' ) ) );
 		update_post_meta( $post_id, '_pb_badge', sanitize_text_field( wp_unslash( $_POST['pb_badge'] ?? '' ) ) );
-		update_post_meta( $post_id, '_pb_emoji', sanitize_text_field( wp_unslash( $_POST['pb_emoji'] ?? '' ) ) );
 		update_post_meta( $post_id, '_pb_available', 'no' === ( $_POST['pb_available'] ?? '' ) ? 'no' : 'yes' );
 	}
 

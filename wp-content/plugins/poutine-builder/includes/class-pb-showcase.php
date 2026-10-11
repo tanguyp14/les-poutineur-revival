@@ -31,8 +31,8 @@ class PB_Showcase {
 		$out = '<div class="pbx-menu">';
 		foreach ( $list as $p ) {
 			$out .= sprintf(
-				'<article class="pbx-card"><span class="pbx-emoji" aria-hidden="true">%1$s</span>%2$s<p class="pbx-tagline">%3$s</p><h3>%4$s</h3>%5$s<div class="pbx-foot"><strong class="pbx-price">%6$s</strong><a class="pbx-btn" href="%7$s">Commander</a></div></article>',
-				esc_html( $p['emoji'] ),
+				'<article class="pbx-card"><img class="pbx-img" src="%1$s" alt="" loading="lazy" width="800" height="600">%2$s<p class="pbx-tagline">%3$s</p><h3>%4$s</h3>%5$s<div class="pbx-foot"><strong class="pbx-price">%6$s</strong><a class="pbx-btn" href="%7$s">Commander</a></div></article>',
+				esc_url( $p['image'] ),
 				$p['badge'] ? '<span class="pbx-badge">' . esc_html( $p['badge'] ) . '</span>' : '',
 				esc_html( $p['desc'] ),
 				esc_html( $p['name'] ),

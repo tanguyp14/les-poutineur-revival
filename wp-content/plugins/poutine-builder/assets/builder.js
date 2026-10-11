@@ -63,9 +63,7 @@
 			value: ing.id,
 			onchange: (e) => choose(step, ing.id, e.target.checked),
 		});
-		const visual = ing.image
-			? el('img', { src: ing.image, alt: '', loading: 'lazy' })
-			: el('span', { class: 'pb__emoji', 'aria-hidden': 'true' }, ing.emoji || '🍟');
+		const visual = el('img', { class: 'pb__img', src: ing.image, alt: '', loading: 'lazy' });
 		const price = el('span', { class: 'pb__price' }, step.absolute ? money.format(ing.price) : ing.price > 0 ? '+' + money.format(ing.price) : 'Inclus');
 		const label = el('label', { class: 'pb__tile' }, input,
 			ing.badge ? el('span', { class: 'pb__badge pb__badge--tile' }, ing.badge) : '',

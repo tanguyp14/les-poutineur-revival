@@ -55,37 +55,37 @@ class PB_Install {
 		if ( get_posts( array( 'post_type' => PB_Catalog::CPT, 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) ) ) {
 			return;
 		}
-		// [ nom, prix, emoji, accroche (extrait), badge ]. Carte du site ; fromages/toppings à 0 € = inclus (à ajuster).
+		// [ nom, prix, accroche (extrait), badge ]. Carte du site ; fromages/toppings à 0 € = inclus (à ajuster).
 		$seed = array(
 			'poutine' => array(
-				array( 'La Classique', 10, '🍟', 'Basique Simple', '' ),
-				array( 'La Classique Bacon', 12, '🥓', 'On revoit les bases', '' ),
-				array( 'Chili !', 13, '🌶️', 'Aie Caramba !', '' ),
-				array( 'La Cochonne', 13, '🐖', 'C’est le nom de la recette', '' ),
-				array( 'La Saucisse', 12, '🌭', 'Mais t’avais dit qu’on ferait des knakis :(', '' ),
-				array( 'La Stephen Curry', 13, '🏀', 'Not 1, not 2, but 3 🏀', '' ),
-				array( 'La Végétarienne', 12, '🥦', 'Viens pas woingner on a pensé à toi', 'Vegan' ),
-				array( 'La Blanquette des Vikings', 13, '🪓', 'Comment est votre Blanquette ?', '' ),
+				array( 'La Classique', 10, 'Basique Simple', '' ),
+				array( 'La Classique Bacon', 12, 'On revoit les bases', '' ),
+				array( 'Chili !', 13, 'Aie Caramba !', '' ),
+				array( 'La Cochonne', 13, 'C’est le nom de la recette', '' ),
+				array( 'La Saucisse', 12, 'Mais t’avais dit qu’on ferait des knakis :(', '' ),
+				array( 'La Stephen Curry', 13, 'Not 1, not 2, but 3 🏀', '' ),
+				array( 'La Végétarienne', 12, 'Viens pas woingner on a pensé à toi', 'Vegan' ),
+				array( 'La Blanquette des Vikings', 13, 'Comment est votre Blanquette ?', '' ),
 			),
 			'cheese'  => array(
-				array( 'Fromage en grains', 0, '🧀', '', '' ),
-				array( 'Camembert', 0, '🧀', '', '' ),
-				array( 'Raclette fondue', 0, '🧀', '', '' ),
+				array( 'Fromage en grains', 0, '', '' ),
+				array( 'Camembert', 0, '', '' ),
+				array( 'Raclette fondue', 0, '', '' ),
 			),
 			'topping' => array(
-				array( 'Persil', 0, '🌿', '', '' ),
-				array( 'Coriandre', 0, '🌿', '', '' ),
-				array( 'Oignons frits', 0, '🧅', '', '' ),
-				array( 'Oignons rouges', 0, '🧅', '', '' ),
-				array( 'Cacahuètes', 0, '🥜', '', '' ),
-				array( 'Jalapeños', 0, '🌶️', '', '' ),
-				array( 'Chips de carottes maison', 0, '🥕', '', 'Topping du mois' ),
-				array( 'Sans topping', 0, '🚫', '', '' ),
+				array( 'Persil', 0, '', '' ),
+				array( 'Coriandre', 0, '', '' ),
+				array( 'Oignons frits', 0, '', '' ),
+				array( 'Oignons rouges', 0, '', '' ),
+				array( 'Cacahuètes', 0, '', '' ),
+				array( 'Jalapeños', 0, '', '' ),
+				array( 'Chips de carottes maison', 0, '', 'Topping du mois' ),
+				array( 'Sans topping', 0, '', '' ),
 			),
 		);
 		$order = 0;
 		foreach ( $seed as $step => $rows ) {
-			foreach ( $rows as [ $name, $price, $emoji, $tagline, $badge ] ) {
+			foreach ( $rows as [ $name, $price, $tagline, $badge ] ) {
 				$id = wp_insert_post(
 					array(
 						'post_type'    => PB_Catalog::CPT,
@@ -97,7 +97,6 @@ class PB_Install {
 				);
 				update_post_meta( $id, '_pb_step', $step );
 				update_post_meta( $id, '_pb_price', $price );
-				update_post_meta( $id, '_pb_emoji', $emoji );
 				update_post_meta( $id, '_pb_badge', $badge );
 				update_post_meta( $id, '_pb_available', 'yes' );
 			}

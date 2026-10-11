@@ -9,9 +9,9 @@ Text Domain: poutineurs
 
 /* Habillage des blocs du plugin Poutine Builder (carte, options, boutiques). */
 .pbx-menu { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.pbx-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 24px 20px 20px; background: #fff; color: var(--wp--preset--color--ink); border-radius: 20px; border: 3px solid var(--wp--preset--color--ink); box-shadow: 6px 6px 0 var(--wp--preset--color--yellow); transition: transform .15s, box-shadow .15s; }
+.pbx-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 0 20px 20px; overflow: visible; background: #fff; color: var(--wp--preset--color--ink); border-radius: 20px; border: 3px solid var(--wp--preset--color--ink); box-shadow: 6px 6px 0 var(--wp--preset--color--yellow); transition: transform .15s, box-shadow .15s; }
 .pbx-card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--wp--preset--color--orange); }
-.pbx-emoji { font-size: 2.6rem; line-height: 1; }
+.pbx-img { display: block; width: calc(100% + 40px); max-width: none; height: auto; margin: 0 -20px 8px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 17px 17px 0 0; border-bottom: 3px solid var(--wp--preset--color--ink); }
 .pbx-tagline { margin: 8px 0 0; font-style: italic; color: var(--wp--preset--color--muted); font-size: .9rem; min-height: 2.6em; }
 .pbx-card h3 { margin: 0; font-size: 1.5rem; }
 .pbx-contents { margin: 4px 0 0; font-size: .9rem; color: var(--wp--preset--color--muted); }
