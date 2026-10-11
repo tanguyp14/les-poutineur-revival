@@ -9,6 +9,9 @@ defined( 'ABSPATH' ) || exit;
 function pbt_defaults(): array {
 	return array(
 		'banner'       => '',
+		'marquee_text'   => 'Poutine ● Fromage en grains ● Camembert ● Raclette fondue ● Click & collect ● Topping du mois ● ',
+		'marquee_text_2' => 'Compose ta poutine ● Réserve ton heure ● Récupère-la chaude ● ',
+		'ring_text'      => 'Ta poutine à ta façon ● Click & collect ● ',
 		'hero_title'   => 'Ta poutine, à ta façon.',
 		'hero_text'    => 'Choisis ta recette, ton fromage et ton topping. Commande en ligne, récupère-la chaude en boutique.',
 		'hero_cta'     => 'Composer ma poutine',
@@ -54,6 +57,10 @@ add_action(
 			array( 'key' => 'pbt_hero_title', 'label' => 'Titre', 'name' => 'hero_title', 'type' => 'text', 'default_value' => $d['hero_title'] ),
 			array( 'key' => 'pbt_hero_text', 'label' => 'Texte', 'name' => 'hero_text', 'type' => 'textarea', 'rows' => 3, 'default_value' => $d['hero_text'] ),
 			array( 'key' => 'pbt_hero_cta', 'label' => 'Bouton', 'name' => 'hero_cta', 'type' => 'text', 'default_value' => $d['hero_cta'] ),
+			array( 'key' => 'pbt_ring_text', 'label' => 'Texte rond autour du logo', 'name' => 'ring_text', 'type' => 'text', 'default_value' => $d['ring_text'] ),
+			array( 'key' => 'pbt_tab_bands', 'label' => 'Bandeaux défilants', 'type' => 'tab' ),
+			array( 'key' => 'pbt_marquee_text', 'label' => 'Bandeau 1 (jaune/noir)', 'name' => 'marquee_text', 'type' => 'text', 'default_value' => $d['marquee_text'], 'instructions' => 'Sépare les mots avec ●' ),
+			array( 'key' => 'pbt_marquee_text_2', 'label' => 'Bandeau 2 (orange)', 'name' => 'marquee_text_2', 'type' => 'text', 'default_value' => $d['marquee_text_2'] ),
 			array( 'key' => 'pbt_tab_how', 'label' => 'Click & collect', 'type' => 'tab' ),
 			array( 'key' => 'pbt_how_title', 'label' => 'Titre de la section', 'name' => 'how_title', 'type' => 'text', 'default_value' => $d['how_title'] ),
 		);
@@ -91,21 +98,39 @@ add_shortcode(
 add_shortcode(
 	'pbt_hero',
 	static function () {
+		$ring = trim( pbt_field( 'ring_text' ) );
 		return sprintf(
-			'<section class="pbt-hero"><div class="pbt-hero__text"><h1>%1$s</h1><p>%2$s</p><p class="pbt-hero__cta"><a class="pbx-btn pbx-btn--lg" href="%3$s">%4$s</a> <a class="pbx-btn pbx-btn--ghost pbx-btn--lg" href="#carte">Voir la carte</a></p></div><div class="pbt-hero__logo"><img src="%5$s" alt="Les Poutineurs" width="320" height="341"></div></section>',
+			'<section class="pbt-hero"><div class="pbt-hero__text"><h1>%1$s</h1><p class="pbt-hero__lead">%2$s</p><p class="pbt-hero__cta"><a class="pbx-btn pbx-btn--lg" href="%3$s">%4$s</a> <a class="pbx-btn pbx-btn--ghost pbx-btn--lg" href="#carte">Voir la carte</a></p></div><div class="pbt-hero__logo"><div class="pbt-ring-wrap"><svg class="pbt-ring" viewBox="0 0 400 400" aria-hidden="true" focusable="false"><defs><path id="pbt-ring-path" d="M200,200 m-150,0 a150,150 0 1,1 300,0 a150,150 0 1,1 -300,0"/></defs><text><textPath href="#pbt-ring-path" textLength="930" lengthAdjust="spacing">%6$s</textPath></text></svg></div><img class="pbt-hero__img" src="%5$s" alt="Les Poutineurs" width="320" height="341"></div></section>',
 			esc_html( pbt_field( 'hero_title' ) ),
 			esc_html( pbt_field( 'hero_text' ) ),
 			esc_url( home_url( '/commander/' ) ),
 			esc_html( pbt_field( 'hero_cta' ) ),
-			esc_url( get_theme_file_uri( 'assets/images/logo.png' ) )
+			esc_url( get_theme_file_uri( 'assets/images/logo.png' ) ),
+			esc_html( $ring )
 		);
+	}
+);
+
+add_shortcode(
+	'pbt_marquee',
+	static function ( $atts ) {
+		$variant = 'b' === ( $atts['variant'] ?? 'a' ) ? 'b' : 'a';
+		$text    = pbt_field( 'b' === $variant ? 'marquee_text_2' : 'marquee_text' );
+		return '<div class="pbt-marquee pbt-marquee--' . $variant . '" aria-hidden="true"><div class="pbt-marquee__track"><span class="pbt-marquee__item">' . esc_html( $text ) . '</span></div></div>';
 	}
 );
 
 add_shortcode(
 	'pbt_how',
 	static function () {
-		$out = '<h2>' . esc_html( pbt_field( 'how_title' ) ) . '</h2><ol class="pbt-steps">';
+		$words = array();
+		foreach ( array( 1, 2, 3 ) as $i ) {
+			$words[] = mb_strtoupper( pbt_field( "step_{$i}_title" ) );
+		}
+		$line = implode( ' ● ', $words ) . ' ● ';
+		$out  = '<h2>' . esc_html( pbt_field( 'how_title' ) ) . '</h2>';
+		$out .= '<svg class="pbt-curve" viewBox="0 0 1200 240" aria-hidden="true" focusable="false"><path id="pbt-wave" d="M-60,120 C140,20 340,220 540,120 S940,20 1260,120" fill="none"/><text><textPath id="pbt-wave-text" href="#pbt-wave" startOffset="0">' . esc_html( str_repeat( $line, 5 ) ) . '</textPath></text></svg>';
+		$out .= '<ol class="pbt-steps">';
 		foreach ( array( 1, 2, 3 ) as $i ) {
 			$out .= '<li><span class="pbt-steps__n" aria-hidden="true">' . $i . '</span><h3>' . esc_html( pbt_field( "step_{$i}_title" ) ) . '</h3><p>' . esc_html( pbt_field( "step_{$i}_text" ) ) . '</p></li>';
 		}

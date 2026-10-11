@@ -18,6 +18,11 @@ class PB_Showcase {
 		return $poutine_id ? add_query_arg( 'poutine', $poutine_id, $url ) : $url;
 	}
 
+	/** 13 € plutôt que 13,00 €. */
+	private static function short_price( float $v ): string {
+		return rtrim( rtrim( number_format( $v, 2, ',', '' ), '0' ), ',' ) . ' €';
+	}
+
 	private static function money( float $v ): string {
 		return wp_strip_all_tags( wc_price( $v ) );
 	}
@@ -31,13 +36,13 @@ class PB_Showcase {
 		$out = '<div class="pbx-menu">';
 		foreach ( $list as $p ) {
 			$out .= sprintf(
-				'<article class="pbx-card"><img class="pbx-img" src="%1$s" alt="" loading="lazy" width="800" height="600">%2$s<p class="pbx-tagline">%3$s</p><h3>%4$s</h3>%5$s<div class="pbx-foot"><strong class="pbx-price">%6$s</strong><a class="pbx-btn" href="%7$s">Commander</a></div></article>',
+				'<article class="pbx-card"><div class="pbx-media"><img class="pbx-img" src="%1$s" alt="" loading="lazy" width="800" height="600"></div><strong class="pbx-sticker">%6$s</strong>%2$s<p class="pbx-tagline">%3$s</p><h3>%4$s</h3>%5$s<div class="pbx-foot"><a class="pbx-btn" href="%7$s">Commander</a></div></article>',
 				esc_url( $p['image'] ),
 				$p['badge'] ? '<span class="pbx-badge">' . esc_html( $p['badge'] ) . '</span>' : '',
 				esc_html( $p['desc'] ),
 				esc_html( $p['name'] ),
 				$p['contents'] ? '<p class="pbx-contents">' . esc_html( $p['contents'] ) . '</p>' : '',
-				esc_html( self::money( $p['price'] ) ),
+				esc_html( self::short_price( $p['price'] ) ),
 				esc_url( self::order_url( $p['id'] ) )
 			);
 		}
