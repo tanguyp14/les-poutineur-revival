@@ -57,9 +57,12 @@ add_filter( 'pb_pos_adapters', fn( $a ) => array_merge( $a, array( new Ma_Caisse
 - La capacité d'un créneau n'est pas verrouillée : deux commandes simultanées peuvent dépasser de 1.
 - Ingrédients, prix et noms de boutiques sont des exemples à remplacer.
 
-## Déploiement (Railway)
+## Installation sur un WordPress existant
 
-Le `Dockerfile` à la racine construit WordPress + WooCommerce + ACF + le plugin + le thème. Au premier démarrage, `docker/install.sh` installe le site (français, EUR, permaliens, checkout classique, paiement au retrait activé).
+1. Installer et activer **WooCommerce** (et **ACF**, la version gratuite suffit).
+2. Extensions → Ajouter → Téléverser `poutine-builder.zip`, puis Apparence → Thèmes → Ajouter → Téléverser `poutineurs.zip`. Activer les deux.
+3. Réglages → Lecture : la page d'accueil est créée automatiquement (« Accueil »). Vérifier que les pages Panier et Commande utilisent les shortcodes `[woocommerce_cart]` et `[woocommerce_checkout]` (checkout classique).
+4. WooCommerce → Poutine Builder : boutiques, horaires, caisse. WooCommerce → Réglages → Paiements : activer « Paiement à la livraison » (renommé « Payer au retrait ») si le règlement se fait en boutique.
 
-Variables du service WordPress : `WORDPRESS_DB_HOST`, `WORDPRESS_DB_USER`, `WORDPRESS_DB_PASSWORD`, `WORDPRESS_DB_NAME` (pointées sur le service MySQL), `WP_ADMIN_PASSWORD` (obligatoire), `WP_ADMIN_USER`, `WP_ADMIN_EMAIL`, et `WORDPRESS_CONFIG_EXTRA` (adresse du site dynamique + HTTPS derrière le proxy). Volume à monter sur `/var/www/html/wp-content/uploads` pour conserver les photos.
-Les e-mails (confirmation de commande) nécessitent un plugin SMTP : le conteneur n'envoie pas de mail.
+Les zips se génèrent avec `bin/build-zips.sh` ; GitHub Actions les publie à chaque push (onglet *Actions* → dernière exécution → *Artifacts*, téléchargeable depuis un téléphone).
+Les e-mails de commande nécessitent un plugin SMTP si l'hébergeur n'envoie pas de mail.

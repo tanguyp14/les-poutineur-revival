@@ -2,3 +2,4 @@ node_modules/
 vendor/
 .DS_Store
 .wp-env.override.json
+dist/
