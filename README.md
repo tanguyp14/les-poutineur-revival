@@ -56,3 +56,10 @@ add_filter( 'pb_pos_adapters', fn( $a ) => array_merge( $a, array( new Ma_Caisse
 - Checkout **classique** uniquement (pas le checkout Blocks).
 - La capacité d'un créneau n'est pas verrouillée : deux commandes simultanées peuvent dépasser de 1.
 - Ingrédients, prix et noms de boutiques sont des exemples à remplacer.
+
+## Déploiement (Railway)
+
+Le `Dockerfile` à la racine construit WordPress + WooCommerce + ACF + le plugin + le thème. Au premier démarrage, `docker/install.sh` installe le site (français, EUR, permaliens, checkout classique, paiement au retrait activé).
+
+Variables du service WordPress : `WORDPRESS_DB_HOST`, `WORDPRESS_DB_USER`, `WORDPRESS_DB_PASSWORD`, `WORDPRESS_DB_NAME` (pointées sur le service MySQL), `WP_ADMIN_PASSWORD` (obligatoire), `WP_ADMIN_USER`, `WP_ADMIN_EMAIL`, et `WORDPRESS_CONFIG_EXTRA` (adresse du site dynamique + HTTPS derrière le proxy). Volume à monter sur `/var/www/html/wp-content/uploads` pour conserver les photos.
+Les e-mails (confirmation de commande) nécessitent un plugin SMTP : le conteneur n'envoie pas de mail.
