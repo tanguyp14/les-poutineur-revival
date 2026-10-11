@@ -39,3 +39,28 @@ Text Domain: poutineurs
 
 .site-header-bar { position: sticky; top: 0; z-index: 20; }
 @media (prefers-reduced-motion: reduce) { .pbx-card { transition: none; } }
+
+/* Accueil : bandeau, hero, click & collect, FAQ (contenu piloté par ACF, voir inc/acf-fields.php). */
+.pbt-banner { background: var(--wp--preset--color--ink); color: var(--wp--preset--color--yellow); text-align: center; padding: 8px 16px; font-weight: 700; }
+.pbt-hero { display: grid; gap: 32px; align-items: center; max-width: 1280px; margin: 0 auto; }
+@media (min-width: 800px) { .pbt-hero { grid-template-columns: 3fr 2fr; } }
+.pbt-hero h1 { margin: 0 0 16px; font-size: var(--wp--preset--font-size--huge); font-family: var(--wp--preset--font-family--heading); text-transform: uppercase; font-weight: 900; line-height: 1.05; }
+.pbt-hero p { font-size: var(--wp--preset--font-size--large); margin: 0 0 16px; }
+.pbt-hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.pbt-hero__logo { text-align: center; }
+.pbt-hero__logo img { max-width: 320px; width: 100%; height: auto; border: 4px solid var(--wp--preset--color--ink); border-radius: 32px; }
+.pbx-btn--lg { padding: 14px 26px; font-size: .95rem; }
+.pbx-btn--ghost { background: transparent; color: var(--wp--preset--color--ink); border: 3px solid var(--wp--preset--color--ink); padding: 11px 23px; }
+.pbx-btn--ghost:hover, .pbx-btn--ghost:focus-visible { background: var(--wp--preset--color--ink); color: #fff; }
+
+.pbt-steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); counter-reset: none; }
+.pbt-steps li { position: relative; background: #fff; border: 3px solid var(--wp--preset--color--ink); border-radius: 20px; padding: 28px 22px 22px; }
+.pbt-steps__n { position: absolute; top: -18px; left: 20px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--wp--preset--color--red); color: #fff; font-weight: 900; border: 3px solid var(--wp--preset--color--ink); }
+.pbt-steps h3 { margin: 0 0 6px; }
+.pbt-steps p { margin: 0; }
+
+.pbt-faq { margin-top: 24px; display: grid; gap: 12px; }
+.pbt-faq details { background: #fff; border: 3px solid var(--wp--preset--color--ink); border-radius: 16px; padding: 14px 20px; }
+.pbt-faq summary { cursor: pointer; font-weight: 800; }
+.pbt-faq details[open] summary { margin-bottom: 8px; color: var(--wp--preset--color--red); }
+.pbt-faq p { margin: 0; }

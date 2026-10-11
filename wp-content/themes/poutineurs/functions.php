@@ -15,3 +15,5 @@ add_action(
 		add_theme_support( 'editor-styles' );
 	}
 );
+
+require_once get_theme_file_path( 'inc/acf-fields.php' );
