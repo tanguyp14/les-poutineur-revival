@@ -24,6 +24,7 @@ foreach ( array(
 	'class-pb-frontend.php',
 	'class-pb-settings.php',
 	'class-pb-staff.php',
+	'class-pb-showcase.php',
 	'pos/interface-pb-pos-adapter.php',
 	'pos/class-pb-pos-webhook.php',
 	'pos/class-pb-pos-dispatcher.php',
@@ -61,6 +62,7 @@ add_action(
 		PB_Frontend::init();
 		PB_Settings::init();
 		PB_Staff::init();
+		PB_Showcase::init();
 		PB_POS_Dispatcher::init();
 	}
 );

@@ -47,12 +47,10 @@ class PB_Catalog {
 		return apply_filters(
 			'pb_steps',
 			array(
-				array( 'key' => 'size', 'label' => 'Taille', 'type' => 'single', 'required' => true, 'hint' => 'Choisis ta faim' ),
-				array( 'key' => 'fries', 'label' => 'Frites', 'type' => 'single', 'required' => true, 'hint' => 'La base de tout' ),
-				array( 'key' => 'cheese', 'label' => 'Fromage', 'type' => 'single', 'required' => true, 'hint' => 'Ça doit faire « squick »' ),
-				array( 'key' => 'sauce', 'label' => 'Sauce', 'type' => 'single', 'required' => true, 'hint' => 'Le nappage' ),
-				array( 'key' => 'toppings', 'label' => 'Garnitures', 'type' => 'multi', 'required' => false, 'max' => 3, 'hint' => 'Jusqu’à 3' ),
-				array( 'key' => 'extras', 'label' => 'Extras', 'type' => 'multi', 'required' => false, 'max' => 4, 'hint' => 'Un petit plus' ),
+				array( 'key' => 'poutine', 'label' => 'Ta poutine', 'type' => 'single', 'required' => true, 'absolute' => true, 'hint' => 'Choisis ta recette' ),
+				array( 'key' => 'cheese', 'label' => 'Ton fromage', 'type' => 'single', 'required' => true, 'badge' => 'Nouveau', 'hint' => 'Choisis ton fromage' ),
+				array( 'key' => 'topping', 'label' => 'Ton topping', 'type' => 'single', 'required' => true, 'hint' => 'Un topping au choix' ),
+				array( 'key' => 'extras', 'label' => 'Ingrédients en plus', 'type' => 'multi', 'required' => false, 'hint' => 'Pour les gourmands' ),
 			)
 		);
 	}
@@ -60,7 +58,7 @@ class PB_Catalog {
 	/**
 	 * Ingrédients disponibles, indexés par ID.
 	 *
-	 * @return array<int,array{id:int,step:string,name:string,price:float,desc:string,image:string,emoji:string}>
+	 * @return array<int,array{id:int,step:string,name:string,price:float,desc:string,image:string,emoji:string,badge:string,contents:string}>
 	 */
 	public static function ingredients(): array {
 		if ( null !== self::$cache ) {
@@ -86,7 +84,9 @@ class PB_Catalog {
 				'price' => (float) get_post_meta( $p->ID, '_pb_price', true ),
 				'desc'  => wp_strip_all_tags( $p->post_excerpt ),
 				'image' => (string) get_the_post_thumbnail_url( $p->ID, 'medium' ),
-				'emoji' => (string) get_post_meta( $p->ID, '_pb_emoji', true ),
+				'emoji'    => (string) get_post_meta( $p->ID, '_pb_emoji', true ),
+				'badge'    => (string) get_post_meta( $p->ID, '_pb_badge', true ),
+				'contents' => (string) get_post_meta( $p->ID, '_pb_contents', true ),
 			);
 		}
 		return self::$cache;
@@ -166,6 +166,8 @@ class PB_Catalog {
 		$step  = get_post_meta( $post->ID, '_pb_step', true );
 		$price = get_post_meta( $post->ID, '_pb_price', true );
 		$emoji = get_post_meta( $post->ID, '_pb_emoji', true );
+		$badge = get_post_meta( $post->ID, '_pb_badge', true );
+		$cont  = get_post_meta( $post->ID, '_pb_contents', true );
 		$avail = get_post_meta( $post->ID, '_pb_available', true ) ?: 'yes';
 		?>
 		<table class="form-table">
@@ -178,7 +180,14 @@ class PB_Catalog {
 			</td></tr>
 			<tr><th><label for="pb_price">Prix (€)</label></th><td>
 				<input type="number" step="0.01" min="0" name="pb_price" id="pb_price" value="<?php echo esc_attr( $price ); ?>">
-				<p class="description">Pour la taille : prix de base de la poutine. Pour le reste : supplément (0 = inclus).</p>
+				<p class="description">Pour une poutine : son prix. Pour le fromage, le topping et les extras : supplément (0 = inclus).</p>
+			</td></tr>
+			<tr><th><label for="pb_contents">Ingrédients de la recette</label></th><td>
+				<textarea name="pb_contents" id="pb_contents" rows="3" class="large-text"><?php echo esc_textarea( $cont ); ?></textarea>
+				<p class="description">Pour les poutines : ce qu’il y a dedans (affiché sur la carte). La phrase d’accroche va dans « Extrait ».</p>
+			</td></tr>
+			<tr><th><label for="pb_badge">Badge</label></th><td>
+				<input type="text" name="pb_badge" id="pb_badge" value="<?php echo esc_attr( $badge ); ?>" placeholder="Topping du mois, Vegan, Nouveau…">
 			</td></tr>
 			<tr><th><label for="pb_emoji">Emoji</label></th><td>
 				<input type="text" name="pb_emoji" id="pb_emoji" value="<?php echo esc_attr( $emoji ); ?>" size="4">
@@ -203,6 +212,8 @@ class PB_Catalog {
 		$step        = sanitize_key( wp_unslash( $_POST['pb_step'] ?? '' ) );
 		update_post_meta( $post_id, '_pb_step', in_array( $step, $valid_steps, true ) ? $step : $valid_steps[0] );
 		update_post_meta( $post_id, '_pb_price', max( 0, (float) wp_unslash( $_POST['pb_price'] ?? 0 ) ) );
+		update_post_meta( $post_id, '_pb_contents', sanitize_textarea_field( wp_unslash( $_POST['pb_contents'] ?? '' ) ) );
+		update_post_meta( $post_id, '_pb_badge', sanitize_text_field( wp_unslash( $_POST['pb_badge'] ?? '' ) ) );
 		update_post_meta( $post_id, '_pb_emoji', sanitize_text_field( wp_unslash( $_POST['pb_emoji'] ?? '' ) ) );
 		update_post_meta( $post_id, '_pb_available', 'no' === ( $_POST['pb_available'] ?? '' ) ? 'no' : 'yes' );
 	}

@@ -1,0 +1,41 @@
+/*
+Theme Name: Les Poutineurs
+Description: Thème de blocs pour Les Poutineurs. À utiliser avec le plugin Poutine Builder.
+Version: 0.1.0
+Requires at least: 6.4
+Requires PHP: 8.0
+Text Domain: poutineurs
+*/
+
+/* Habillage des blocs du plugin Poutine Builder (carte, options, boutiques). */
+.pbx-menu { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.pbx-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 24px 20px 20px; background: #fff; color: var(--wp--preset--color--ink); border-radius: 20px; border: 3px solid var(--wp--preset--color--ink); box-shadow: 6px 6px 0 var(--wp--preset--color--yellow); transition: transform .15s, box-shadow .15s; }
+.pbx-card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--wp--preset--color--orange); }
+.pbx-emoji { font-size: 2.6rem; line-height: 1; }
+.pbx-tagline { margin: 8px 0 0; font-style: italic; color: var(--wp--preset--color--muted); font-size: .9rem; min-height: 2.6em; }
+.pbx-card h3 { margin: 0; font-size: 1.5rem; }
+.pbx-contents { margin: 4px 0 0; font-size: .9rem; color: var(--wp--preset--color--muted); }
+.pbx-foot { margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pbx-price { font-size: 1.7rem; font-family: var(--wp--preset--font-family--heading); }
+.pbx-btn { display: inline-block; padding: 10px 18px; border-radius: 999px; background: var(--wp--preset--color--red); color: #fff; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: .85rem; letter-spacing: .04em; }
+.pbx-btn:hover, .pbx-btn:focus-visible { background: var(--wp--preset--color--ink); color: #fff; }
+.pbx-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--wp--preset--color--orange); color: var(--wp--preset--color--ink); font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; vertical-align: middle; }
+.pbx-card .pbx-badge { position: absolute; top: -12px; right: 14px; background: var(--wp--preset--color--yellow); border: 2px solid var(--wp--preset--color--ink); }
+
+.pbx-options { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pbx-opt { background: #fff; border: 3px solid var(--wp--preset--color--ink); border-radius: 20px; padding: 20px 24px; color: var(--wp--preset--color--ink); }
+.pbx-opt h3 { margin-top: 0; }
+.pbx-opt ul { list-style: none; margin: 0; padding: 0; }
+.pbx-opt li { padding: 8px 0; border-bottom: 1px dashed #d8cdb8; }
+.pbx-opt li:last-child { border-bottom: 0; }
+.pbx-opt li.is-featured { font-weight: 800; }
+
+.pbx-stores { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pbx-store { background: var(--wp--preset--color--ink); color: #fff; border-radius: 20px; padding: 24px; }
+.pbx-store h3 { margin: 0 0 8px; color: var(--wp--preset--color--yellow); }
+.pbx-store p { margin: 4px 0; }
+.pbx-store a { color: var(--wp--preset--color--yellow); }
+.pbx-hours { opacity: .8; }
+
+.site-header-bar { position: sticky; top: 0; z-index: 20; }
+@media (prefers-reduced-motion: reduce) { .pbx-card { transition: none; } }

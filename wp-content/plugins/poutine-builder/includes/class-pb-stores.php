@@ -26,8 +26,8 @@ class PB_Stores {
 			'pos_token'    => '',
 		);
 		return array(
-			'store_1' => array_merge( $base, array( 'id' => 'store_1', 'name' => 'Boutique 1' ) ),
-			'store_2' => array_merge( $base, array( 'id' => 'store_2', 'name' => 'Boutique 2' ) ),
+			'store_1' => array_merge( $base, array( 'id' => 'store_1', 'name' => 'Caen — Libération', 'address' => '12 avenue de la Libération, Caen' ) ),
+			'store_2' => array_merge( $base, array( 'id' => 'store_2', 'name' => 'Caen — Écuyère', 'address' => '21 rue Écuyère, Caen' ) ),
 		);
 	}
 

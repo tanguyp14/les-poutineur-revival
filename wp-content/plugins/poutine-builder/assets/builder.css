@@ -65,3 +65,11 @@
 .pb__msg a { color: var(--pb-accent); font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) { .pb * { transition: none !important; } }
+
+.pb__badge { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: var(--pb-accent); color: var(--pb-accent-ink); font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; vertical-align: middle; }
+.pb__badge--tile { position: absolute; top: -8px; left: -4px; margin: 0; z-index: 1; }
+.pb__grid--recipes { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+.pb__grid--recipes .pb__tile { min-height: 150px; }
+.pb__tagline { font-style: italic; color: var(--pb-muted); font-size: .82rem; }
+.pb__contents { font-size: .8rem; color: var(--pb-muted); }
+.pb__grid--recipes .pb__price { font-weight: 800; color: var(--pb-ink); font-size: 1.1rem; margin-top: auto; }

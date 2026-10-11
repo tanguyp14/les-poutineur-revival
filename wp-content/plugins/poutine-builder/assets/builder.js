@@ -5,6 +5,7 @@
 
 	const cfg = JSON.parse(root.dataset.config);
 	const money = new Intl.NumberFormat(cfg.locale, { style: 'currency', currency: cfg.currency });
+	cfg.steps = cfg.steps.filter((s) => s.required || (cfg.ingredients[s.key] || []).length);
 	const state = Object.fromEntries(cfg.steps.map((s) => [s.key, []]));
 	let qty = 1;
 
@@ -40,12 +41,12 @@
 		const head = el('header', { class: 'pb__step-head' },
 			el('span', { class: 'pb__step-num' }, String(idx + 1)),
 			el('div', {},
-				el('h3', {}, step.label, step.required ? '' : el('em', {}, ' (optionnel)')),
+				el('h3', {}, step.label, step.badge ? el('span', { class: 'pb__badge' }, step.badge) : '', step.required ? '' : el('em', {}, ' (optionnel)')),
 				el('p', { class: 'pb__hint' }, step.hint || '')
 			),
 			badge
 		);
-		const grid = el('div', { class: 'pb__grid', role: step.type === 'single' ? 'radiogroup' : 'group', 'aria-label': step.label });
+		const grid = el('div', { class: 'pb__grid' + (step.absolute ? ' pb__grid--recipes' : ''), role: step.type === 'single' ? 'radiogroup' : 'group', 'aria-label': step.label });
 		items.forEach((ing) => grid.append(tile(step, ing)));
 		if (!items.length) grid.append(el('p', { class: 'pb__empty' }, 'Rien de disponible pour le moment.'));
 
@@ -65,10 +66,15 @@
 		const visual = ing.image
 			? el('img', { src: ing.image, alt: '', loading: 'lazy' })
 			: el('span', { class: 'pb__emoji', 'aria-hidden': 'true' }, ing.emoji || '🍟');
-		const price = el('span', { class: 'pb__price' }, ing.price > 0 ? '+' + money.format(ing.price) : 'Inclus');
-		if (step.key === 'size') price.textContent = money.format(ing.price);
-		const label = el('label', { class: 'pb__tile' }, input, visual, el('span', { class: 'pb__tile-name' }, ing.name), price);
-		if (ing.desc) label.title = ing.desc;
+		const price = el('span', { class: 'pb__price' }, step.absolute ? money.format(ing.price) : ing.price > 0 ? '+' + money.format(ing.price) : 'Inclus');
+		const label = el('label', { class: 'pb__tile' }, input,
+			ing.badge ? el('span', { class: 'pb__badge pb__badge--tile' }, ing.badge) : '',
+			visual,
+			el('span', { class: 'pb__tile-name' }, ing.name),
+			ing.desc && step.absolute ? el('span', { class: 'pb__tagline' }, ing.desc) : '',
+			ing.contents ? el('span', { class: 'pb__contents' }, ing.contents) : '',
+			price);
+		if (ing.desc && !step.absolute) label.title = ing.desc;
 		return label;
 	}
 
@@ -165,5 +171,13 @@
 			)
 		)
 	);
+	// Présélection depuis la carte : ?poutine=ID
+	const wanted = Number(new URLSearchParams(location.search).get('poutine'));
+	const pre = wanted && root.querySelector(`input[name="pb_poutine"][value="${wanted}"]`);
+	if (pre) {
+		pre.checked = true;
+		state.poutine = [wanted];
+	}
 	update();
+	if (pre) setTimeout(() => stepSections[1]?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
 })();

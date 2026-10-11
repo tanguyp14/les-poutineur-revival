@@ -4,12 +4,20 @@ WordPress + WooCommerce : composition de poutine en ligne, retrait en magasin (c
 
 Tout est dans le plugin `wp-content/plugins/poutine-builder`.
 
+## Contenu du dépôt
+
+- `wp-content/themes/poutineurs` : thème de blocs (couleurs du logo, accueil : hero, carte, fromages/toppings, boutiques). Remplacer `assets/images/logo.png` par une version haute définition (idéalement SVG).
+- `wp-content/plugins/poutine-builder` : configurateur, retrait, caisse, suivi.
+
 ## Fonctionnement
 
-1. **Configurateur** `[poutine_builder]` : étapes Taille → Frites → Fromage → Sauce → Garnitures (max 3) → Extras (max 4). Tuiles tactiles, progression, récap + total en direct (barre collée en bas sur mobile).
-2. **Prix** : recalculé côté serveur à partir des ingrédients (le prix envoyé par le navigateur est ignoré). La composition est revérifiée au panier (ingrédient en rupture → ligne retirée).
-3. **Retrait** : au checkout, le client choisit la boutique puis un créneau (horaires, jours fermés, préparation minimum, capacité par créneau configurables).
-4. **Caisse** : quand la commande passe en « En cours » (payée, ou paiement au retrait), un envoi asynchrone (Action Scheduler) part vers la caisse de la boutique choisie, avec 5 essais (1 min, 5 min, 15 min, 1 h). Le statut est visible dans les notes de commande, et l'action « Renvoyer la commande à la caisse » existe sur chaque commande.
+1. **La carte** : 8 poutines à prix fixe (La Classique 10 €, Bacon 12 €, Chili ! 13 €, Cochonne 13 €, Saucisse 12 €, Stephen Curry 13 €, Végétarienne 12 € (badge Vegan), Blanquette des Vikings 13 €). Chaque ligne = un ingrédient de l'étape « Ta poutine » dans **Poutine · Ingrédients** : prix, phrase d'accroche (champ *Extrait*), liste des ingrédients de la recette, badge, photo.
+2. **Configurateur** `[poutine_builder]` (page *Commander*, créée à l'activation) : Ta poutine → Ton fromage (badge *Nouveau* : grains, camembert, raclette) → Ton topping (persil, coriandre, oignons frits/rouges, cacahuètes, jalapeños + *topping du mois*) → Ingrédients en plus (étape masquée tant qu'aucun extra n'est créé). Le bouton « Commander » de la carte présélectionne la recette (`?poutine=ID`).
+3. **Prix** : recalculé côté serveur (recette + suppléments). Le prix envoyé par le navigateur est ignoré. La composition est revérifiée au panier.
+4. **Retrait** : au checkout, boutique puis créneau (horaires, jours fermés, préparation, capacité par créneau).
+5. **Caisse** : à « En cours », envoi asynchrone vers la caisse de la boutique, 5 essais, action « Renvoyer à la caisse ».
+
+Blocs d'affichage pour le thème : `[poutine_menu]`, `[poutine_options]`, `[poutine_stores]` (tout vient du back-office).
 
 ## Suivi des commandes (personnel)
 
@@ -36,6 +44,12 @@ Pour une caisse précise, ajouter un adaptateur :
 ```php
 add_filter( 'pb_pos_adapters', fn( $a ) => array_merge( $a, array( new Ma_Caisse_Adapter() ) ) ); // implements PB_POS_Adapter
 ```
+
+## À compléter / à vérifier
+
+- Ingrédients de chaque recette et liste des extras avec leurs prix (à saisir dans le back-office).
+- Suppléments éventuels des fromages/toppings (0 € = inclus pour l'instant), adresses et horaires des boutiques (adresses reprises d'un annuaire en ligne, non vérifiées).
+- Accroches : associées à la recette qui les suit sur la carte (`Basique Simple` → La Classique, etc.).
 
 ## Limites connues (v0.1)
 
