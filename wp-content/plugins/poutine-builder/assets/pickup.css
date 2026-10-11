@@ -1,0 +1,10 @@
+.pb-pickup { border: 2px solid #eadfce; border-radius: 12px; padding: 16px; margin: 0 0 24px; }
+.pb-pickup legend { font-weight: 700; padding: 0 8px; }
+.pb-pickup__stores { display: grid; gap: 10px; margin-bottom: 12px; }
+@media (min-width: 600px) { .pb-pickup__stores { grid-template-columns: 1fr 1fr; } }
+.pb-pickup__store { position: relative; display: flex; flex-direction: column; padding: 12px; border: 2px solid #eadfce; border-radius: 10px; cursor: pointer; }
+.pb-pickup__store input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.pb-pickup__store:has(input:checked) { border-color: #d9480f; background: #fff4ec; }
+.pb-pickup__store:has(input:focus-visible) { outline: 3px solid #2b1d0e; outline-offset: 2px; }
+.pb-pickup__name { font-weight: 700; }
+.pb-pickup__addr { font-size: .9em; color: #7a6a58; }
