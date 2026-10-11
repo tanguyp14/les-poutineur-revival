@@ -28,12 +28,19 @@ Créer une page avec `[poutine_staff]` (idéalement sur une tablette en boutique
 - Heure de retrait, compte à rebours, retard en rouge, téléphone cliquable, note client, « À encaisser » si paiement au retrait, alerte si l'envoi caisse a échoué.
 - Choix de la boutique mémorisé sur l'appareil.
 
-## Démarrage
+## Lancer en local (ordinateur)
+
+Prérequis : [Docker Desktop](https://www.docker.com/products/docker-desktop/) et Node 18+.
 
 ```bash
-npx @wordpress/env start          # nécessite Docker
+npm install
+npm start        # WordPress + WooCommerce + ACF + plugin + thème, configurés en français/EUR
 ```
-Puis dans l'admin : activer WooCommerce + Poutine Builder, créer une page avec `[poutine_builder]`, vérifier que la page Commande utilise le shortcode `[woocommerce_checkout]` (checkout classique), et régler **WooCommerce → Poutine Builder** (boutiques, horaires, caisse). Les ingrédients (exemples) se gèrent dans **Poutine · Ingrédients**.
+Site : http://localhost:8888 · Admin : http://localhost:8888/wp-admin (`admin` / `password`). `npm stop` pour arrêter, `npm run reset` pour repartir de zéro.
+
+Alternative sans ligne de commande : [LocalWP](https://localwp.com/), puis suivre « Installation sur un WordPress existant » ci-dessous.
+
+Ensuite dans l'admin : régler **WooCommerce → Poutine Builder** (boutiques, horaires, caisse) ; les ingrédients se gèrent dans **Poutine · Ingrédients**, les textes d'accueil dans la page « Accueil » (ACF). Pages créées automatiquement : *Commander* (`[poutine_builder]`) et *Suivi des commandes* (`[poutine_staff]`).
 
 ## Brancher la caisse
 
